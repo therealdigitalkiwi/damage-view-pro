@@ -3,9 +3,9 @@ import { DamageCard } from '@/components/DamageCard';
 import { JobLoader } from '@/components/JobLoader';
 import { ConfigurationTab } from '@/components/ConfigurationTab';
 import { DamageImage, Job } from '@/types/damage-assessment';
-import { mockJobs } from '@/data/mock-data';
 import { useToast } from '@/hooks/use-toast';
 import { useSupabaseConfig } from '@/hooks/useSupabaseConfig';
+import { fetchJobFromSupabase } from '@/hooks/useSupabaseQuery';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ImageIcon, Settings } from 'lucide-react';
 
@@ -16,28 +16,51 @@ const Index = () => {
   const { toast } = useToast();
   const { config, saveConfig, isConfigured } = useSupabaseConfig();
 
-  const handleLoadJob = (jobId: string) => {
+  const handleLoadJob = async (jobId: string) => {
+    if (!isConfigured) {
+      toast({
+        title: 'Configuration Required',
+        description: 'Please configure Supabase connection in the Configuration tab',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsLoading(true);
     
-    // Simulate API call - replace with Supabase query later
-    setTimeout(() => {
-      const job = mockJobs[jobId];
-      if (job) {
-        setCurrentJob(job);
-        setImages(job.images);
+    try {
+      const fetchedImages = await fetchJobFromSupabase(jobId, config);
+      
+      if (fetchedImages.length === 0) {
         toast({
-          title: 'Job Loaded',
-          description: `Loaded ${job.images.length} images from ${job.name}`,
-        });
-      } else {
-        toast({
-          title: 'Job Not Found',
-          description: `No job found with ID: ${jobId}`,
+          title: 'No Data Found',
+          description: `No images found for Job ID: ${jobId}`,
           variant: 'destructive',
         });
+        setCurrentJob(null);
+        setImages([]);
+      } else {
+        const job: Job = {
+          id: jobId,
+          name: `Job ${jobId}`,
+          images: fetchedImages,
+        };
+        setCurrentJob(job);
+        setImages(fetchedImages);
+        toast({
+          title: 'Job Loaded',
+          description: `Loaded ${fetchedImages.length} images for Job ${jobId}`,
+        });
       }
+    } catch (error) {
+      toast({
+        title: 'Error Loading Job',
+        description: error instanceof Error ? error.message : 'Failed to connect to Supabase',
+        variant: 'destructive',
+      });
+    } finally {
       setIsLoading(false);
-    }, 500);
+    }
   };
 
   const handleLocationChange = (imageId: string, newLocation: string) => {
