@@ -93,6 +93,20 @@ export async function fetchJobFromSupabase(
     };
   });
 
+  // Sort images by "X of Y" number, falling back to filename
+  images.sort((a, b) => {
+    // Try to extract number from "X of Y" format
+    const numA = parseInt(a.numberOf.match(/^(\d+)/)?.[1] || '0', 10);
+    const numB = parseInt(b.numberOf.match(/^(\d+)/)?.[1] || '0', 10);
+    
+    if (numA !== numB) {
+      return numA - numB;
+    }
+    
+    // Fall back to filename comparison
+    return a.imageName.localeCompare(b.imageName, undefined, { numeric: true });
+  });
+
   return images;
 }
 
