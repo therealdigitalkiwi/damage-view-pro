@@ -1,8 +1,8 @@
 export interface DamageImage {
   id: string;
   location: string;
-  locationIndex: number;
-  totalLocations: number;
+  locationsArray: string[];
+  numberOf: string;
   imageName: string;
   imageUrl: string;
   description: string;

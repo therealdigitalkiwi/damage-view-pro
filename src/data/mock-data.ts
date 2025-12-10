@@ -1,5 +1,7 @@
 import { Job } from '@/types/damage-assessment';
 
+const DEMO_LOCATIONS = ['Kitchen', 'Living Room', 'Bathroom', 'Garage', 'Basement', 'Attic', 'Exterior'];
+
 export const mockJobs: Record<string, Job> = {
   'JOB-001': {
     id: 'JOB-001',
@@ -8,8 +10,8 @@ export const mockJobs: Record<string, Job> = {
       {
         id: '1',
         location: 'Kitchen',
-        locationIndex: 1,
-        totalLocations: 3,
+        locationsArray: DEMO_LOCATIONS,
+        numberOf: '1 of 3',
         imageName: 'kitchen_water_damage_01.jpg',
         imageUrl: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800',
         description: 'Water damage visible on ceiling near sink area',
@@ -20,8 +22,8 @@ export const mockJobs: Record<string, Job> = {
       {
         id: '2',
         location: 'Kitchen',
-        locationIndex: 2,
-        totalLocations: 3,
+        locationsArray: DEMO_LOCATIONS,
+        numberOf: '2 of 3',
         imageName: 'kitchen_floor_damage_02.jpg',
         imageUrl: 'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=800',
         description: 'Floor warping near dishwasher',
@@ -32,8 +34,8 @@ export const mockJobs: Record<string, Job> = {
       {
         id: '3',
         location: 'Kitchen',
-        locationIndex: 3,
-        totalLocations: 3,
+        locationsArray: DEMO_LOCATIONS,
+        numberOf: '3 of 3',
         imageName: 'kitchen_cabinet_03.jpg',
         imageUrl: 'https://images.unsplash.com/photo-1556909190-bffb924339c1?w=800',
         description: 'Cabinet showing minor wear',
@@ -44,8 +46,8 @@ export const mockJobs: Record<string, Job> = {
       {
         id: '4',
         location: 'Living Room',
-        locationIndex: 1,
-        totalLocations: 2,
+        locationsArray: DEMO_LOCATIONS,
+        numberOf: '1 of 2',
         imageName: 'living_room_wall_01.jpg',
         imageUrl: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800',
         description: 'Wall condition assessment',
@@ -56,8 +58,8 @@ export const mockJobs: Record<string, Job> = {
       {
         id: '5',
         location: 'Living Room',
-        locationIndex: 2,
-        totalLocations: 2,
+        locationsArray: DEMO_LOCATIONS,
+        numberOf: '2 of 2',
         imageName: 'living_room_floor_02.jpg',
         imageUrl: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
         description: 'Hardwood floor condition',
@@ -68,8 +70,8 @@ export const mockJobs: Record<string, Job> = {
       {
         id: '6',
         location: 'Bathroom',
-        locationIndex: 1,
-        totalLocations: 1,
+        locationsArray: DEMO_LOCATIONS,
+        numberOf: '1 of 1',
         imageName: 'bathroom_tile_01.jpg',
         imageUrl: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800',
         description: 'Bathroom tile and grout inspection',
@@ -86,8 +88,8 @@ export const mockJobs: Record<string, Job> = {
       {
         id: '7',
         location: 'Garage',
-        locationIndex: 1,
-        totalLocations: 1,
+        locationsArray: DEMO_LOCATIONS,
+        numberOf: '1 of 1',
         imageName: 'garage_floor_01.jpg',
         imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
         description: 'Garage floor condition',

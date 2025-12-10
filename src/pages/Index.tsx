@@ -5,7 +5,7 @@ import { ConfigurationTab } from '@/components/ConfigurationTab';
 import { DamageImage, Job } from '@/types/damage-assessment';
 import { useToast } from '@/hooks/use-toast';
 import { useSupabaseConfig } from '@/hooks/useSupabaseConfig';
-import { fetchJobFromSupabase } from '@/hooks/useSupabaseQuery';
+import { fetchJobFromSupabase, updateImageLocation } from '@/hooks/useSupabaseQuery';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ImageIcon, Settings } from 'lucide-react';
 
@@ -63,16 +63,28 @@ const Index = () => {
     }
   };
 
-  const handleLocationChange = (imageId: string, newLocation: string) => {
+  const handleLocationChange = async (imageId: string, newLocation: string) => {
+    // Update local state immediately
     setImages((prev) =>
       prev.map((img) =>
         img.id === imageId ? { ...img, location: newLocation } : img
       )
     );
-    toast({
-      title: 'Location Updated',
-      description: `Image location changed to ${newLocation}`,
-    });
+
+    // Update in database
+    try {
+      await updateImageLocation(imageId, newLocation, config);
+      toast({
+        title: 'Location Updated',
+        description: `Image location changed to ${newLocation}`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Update Failed',
+        description: error instanceof Error ? error.message : 'Failed to save location',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (

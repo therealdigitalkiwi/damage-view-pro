@@ -132,6 +132,15 @@ export function ConfigurationTab({ config, onSave }: ConfigurationTabProps) {
               />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="col-locationsArray">Locations Array Column</Label>
+              <Input
+                id="col-locationsArray"
+                placeholder="locations_array"
+                value={formData.columns.locationsArray}
+                onChange={(e) => handleColumnChange('locationsArray', e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="col-numberOf">Number (X of Y) Column</Label>
               <Input
                 id="col-numberOf"
