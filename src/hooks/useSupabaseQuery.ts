@@ -26,6 +26,30 @@ function parseDamageScale(value: unknown): DamageScaleType {
   return 'None';
 }
 
+function parseLocationsArray(value: unknown): string[] {
+  if (value === null || value === undefined) return [];
+  
+  // Handle array directly
+  if (Array.isArray(value)) {
+    return value.map(String).filter(Boolean);
+  }
+  
+  // Handle JSON string
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) {
+        return parsed.map(String).filter(Boolean);
+      }
+    } catch {
+      // If not JSON, try comma-separated
+      return value.split(',').map(s => s.trim()).filter(Boolean);
+    }
+  }
+  
+  return [];
+}
+
 export async function fetchJobFromSupabase(
   jobId: string,
   config: SupabaseConfig
@@ -49,29 +73,17 @@ export async function fetchJobFromSupabase(
     return [];
   }
 
-  // Group by location to calculate totals
-  const locationCounts = data.reduce((acc, row) => {
-    const loc = row[config.columns.location] || 'Unknown';
-    acc[loc] = (acc[loc] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
-
-  const locationIndices: Record<string, number> = {};
-
   // Map the data using the configured column names
   const images: DamageImage[] = data.map((row, index) => {
     const location = row[config.columns.location] || 'Unknown';
-    locationIndices[location] = (locationIndices[location] || 0) + 1;
-    
-    // Use numberOf from database if available, otherwise calculate
-    const totalFromDb = row[config.columns.numberOf];
-    const totalLocations = totalFromDb ? parseInt(String(totalFromDb), 10) || locationCounts[location] : locationCounts[location];
+    const locationsArray = parseLocationsArray(row[config.columns.locationsArray]);
+    const numberOf = row[config.columns.numberOf] || '';
 
     return {
       id: row.id?.toString() || `img-${index}`,
       location,
-      locationIndex: locationIndices[location],
-      totalLocations,
+      locationsArray,
+      numberOf: String(numberOf),
       imageName: row[config.columns.fileName] || '',
       imageUrl: row[config.columns.imageLocation] || '',
       description: row[config.columns.description] || '',
@@ -82,4 +94,25 @@ export async function fetchJobFromSupabase(
   });
 
   return images;
+}
+
+export async function updateImageLocation(
+  imageId: string,
+  newLocation: string,
+  config: SupabaseConfig
+): Promise<void> {
+  if (!config.url || !config.anonKey || !config.tableName) {
+    throw new Error('Supabase configuration is incomplete');
+  }
+
+  const supabase = createClient(config.url, config.anonKey);
+
+  const { error } = await supabase
+    .from(config.tableName)
+    .update({ [config.columns.location]: newLocation })
+    .eq('id', imageId);
+
+  if (error) {
+    throw new Error(`Failed to update location: ${error.message}`);
+  }
 }

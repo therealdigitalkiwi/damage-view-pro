@@ -6,6 +6,7 @@ export interface SupabaseConfig {
     jobId: string;
     propertyAddress: string;
     location: string;
+    locationsArray: string;
     numberOf: string;
     fileName: string;
     description: string;
@@ -24,6 +25,7 @@ export const DEFAULT_CONFIG: SupabaseConfig = {
     jobId: 'job_id',
     propertyAddress: 'property_address',
     location: 'location',
+    locationsArray: 'locations_array',
     numberOf: 'number_of',
     fileName: 'file_name',
     description: 'description',

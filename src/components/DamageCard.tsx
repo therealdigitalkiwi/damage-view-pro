@@ -20,11 +20,14 @@ export const DamageCard = ({ image, onLocationChange }: DamageCardProps) => {
           <div className="flex items-center gap-3">
             <LocationSelector
               value={image.location}
+              locations={image.locationsArray}
               onChange={(newLocation) => onLocationChange(image.id, newLocation)}
             />
-            <span className="text-sm text-muted-foreground">
-              {image.locationIndex} of {image.totalLocations}
-            </span>
+            {image.numberOf && (
+              <span className="text-sm text-muted-foreground">
+                {image.numberOf}
+              </span>
+            )}
           </div>
         </div>
       </CardHeader>
