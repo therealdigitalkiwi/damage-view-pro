@@ -1,6 +1,30 @@
 import { createClient } from '@supabase/supabase-js';
 import { SupabaseConfig } from '@/types/supabase-config';
-import { DamageImage } from '@/types/damage-assessment';
+import { DamageImage, DAMAGE_SCALE_MAP, DamageScaleType } from '@/types/damage-assessment';
+
+function parseDamageScale(value: unknown): DamageScaleType {
+  if (value === null || value === undefined) return 'None';
+  
+  // Handle numeric values (0-5)
+  if (typeof value === 'number') {
+    return DAMAGE_SCALE_MAP[value] || 'None';
+  }
+  
+  // Handle string values (could be numeric string or label)
+  const strValue = String(value).trim();
+  const numValue = parseInt(strValue, 10);
+  
+  if (!isNaN(numValue) && numValue >= 0 && numValue <= 5) {
+    return DAMAGE_SCALE_MAP[numValue];
+  }
+  
+  // Try matching label directly
+  if (strValue in DAMAGE_SCALE_MAP) {
+    return DAMAGE_SCALE_MAP[strValue as keyof typeof DAMAGE_SCALE_MAP];
+  }
+  
+  return 'None';
+}
 
 export async function fetchJobFromSupabase(
   jobId: string,
@@ -38,18 +62,22 @@ export async function fetchJobFromSupabase(
   const images: DamageImage[] = data.map((row, index) => {
     const location = row[config.columns.location] || 'Unknown';
     locationIndices[location] = (locationIndices[location] || 0) + 1;
+    
+    // Use numberOf from database if available, otherwise calculate
+    const totalFromDb = row[config.columns.numberOf];
+    const totalLocations = totalFromDb ? parseInt(String(totalFromDb), 10) || locationCounts[location] : locationCounts[location];
 
     return {
       id: row.id?.toString() || `img-${index}`,
       location,
       locationIndex: locationIndices[location],
-      totalLocations: locationCounts[location],
+      totalLocations,
       imageName: row[config.columns.fileName] || '',
       imageUrl: row[config.columns.imageLocation] || '',
       description: row[config.columns.description] || '',
       caption: row[config.columns.caption] || '',
       damageDetected: row[config.columns.damageDetected] || '',
-      damageScale: row[config.columns.damageLabel] || 'None',
+      damageScale: parseDamageScale(row[config.columns.damageLabel]),
     };
   });
 
