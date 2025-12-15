@@ -17,5 +17,7 @@ export const SUPABASE_CONFIG: SupabaseConfig = {
     damageDetected: 'damage_detected',
     damageLabel: 'damage_classification',
     imageLocation: 'image_location',
+    incObs: 'inc_obs',
+    incReport: 'inc_report',
   },
 };

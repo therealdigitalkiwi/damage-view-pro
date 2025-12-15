@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { DamageImage } from '@/types/damage-assessment';
 import { DamageScaleBadge } from './DamageScaleBadge';
 import { LocationSelector } from './LocationSelector';
@@ -8,9 +10,10 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 interface DamageCardProps {
   image: DamageImage;
   onLocationChange: (imageId: string, newLocation: string) => void;
+  onToggleChange: (imageId: string, field: 'incObs' | 'incReport', value: boolean) => void;
 }
 
-export const DamageCard = ({ image, onLocationChange }: DamageCardProps) => {
+export const DamageCard = ({ image, onLocationChange, onToggleChange }: DamageCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
@@ -28,6 +31,32 @@ export const DamageCard = ({ image, onLocationChange }: DamageCardProps) => {
                 {image.numberOf}
               </span>
             )}
+          </div>
+          
+          {/* Toggle Switches */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Label htmlFor={`inc-obs-${image.id}`} className="text-xs font-medium cursor-pointer">
+                Inc Obs
+              </Label>
+              <Switch
+                id={`inc-obs-${image.id}`}
+                checked={image.incObs}
+                onCheckedChange={(checked) => onToggleChange(image.id, 'incObs', checked)}
+                className="h-7 w-14 data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <Label htmlFor={`inc-report-${image.id}`} className="text-xs font-medium cursor-pointer">
+                Inc Report
+              </Label>
+              <Switch
+                id={`inc-report-${image.id}`}
+                checked={image.incReport}
+                onCheckedChange={(checked) => onToggleChange(image.id, 'incReport', checked)}
+                className="h-7 w-14 data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+              />
+            </div>
           </div>
         </div>
       </CardHeader>

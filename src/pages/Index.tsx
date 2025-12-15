@@ -4,7 +4,7 @@ import { JobLoader } from '@/components/JobLoader';
 import { DamageImage, Job } from '@/types/damage-assessment';
 import { useToast } from '@/hooks/use-toast';
 import { useSupabaseConfig } from '@/hooks/useSupabaseConfig';
-import { fetchJobFromSupabase, updateImageLocation } from '@/hooks/useSupabaseQuery';
+import { fetchJobFromSupabase, updateImageLocation, updateImageToggle } from '@/hooks/useSupabaseQuery';
 
 const Index = () => {
   const [currentJob, setCurrentJob] = useState<Job | null>(null);
@@ -82,6 +82,28 @@ const Index = () => {
     }
   };
 
+  const handleToggleChange = async (imageId: string, field: 'incObs' | 'incReport', value: boolean) => {
+    setImages((prev) =>
+      prev.map((img) =>
+        img.id === imageId ? { ...img, [field]: value } : img
+      )
+    );
+
+    try {
+      await updateImageToggle(imageId, field, value, config);
+      toast({
+        title: 'Updated',
+        description: `${field === 'incObs' ? 'Inc Obs' : 'Inc Report'} ${value ? 'enabled' : 'disabled'}`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Update Failed',
+        description: error instanceof Error ? error.message : 'Failed to save toggle',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b border-border">
@@ -128,6 +150,7 @@ const Index = () => {
                 key={image.id}
                 image={image}
                 onLocationChange={handleLocationChange}
+                onToggleChange={handleToggleChange}
               />
             ))}
           </div>

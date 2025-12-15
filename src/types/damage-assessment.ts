@@ -9,6 +9,8 @@ export interface DamageImage {
   caption: string;
   damageDetected: string;
   damageScale: DamageScaleType;
+  incObs: boolean;
+  incReport: boolean;
 }
 
 // Numeric scale 0-5 mapped to labels

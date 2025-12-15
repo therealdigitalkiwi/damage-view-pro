@@ -14,6 +14,8 @@ export interface SupabaseConfig {
     damageDetected: string;
     damageLabel: string;
     imageLocation: string;
+    incObs: string;
+    incReport: string;
   };
 }
 
@@ -33,6 +35,8 @@ export const DEFAULT_CONFIG: SupabaseConfig = {
     damageDetected: 'damage_detected',
     damageLabel: 'damage_label',
     imageLocation: 'image_location',
+    incObs: 'inc_obs',
+    incReport: 'inc_report',
   },
 };
 
