@@ -18,6 +18,8 @@ export const mockJobs: Record<string, Job> = {
         caption: 'Taken from southeast corner',
         damageDetected: 'Water staining, paint bubbling',
         damageScale: 'Moderate',
+        incObs: true,
+        incReport: false,
       },
       {
         id: '2',
@@ -30,6 +32,8 @@ export const mockJobs: Record<string, Job> = {
         caption: 'Close-up of affected area',
         damageDetected: 'Warped laminate, moisture damage',
         damageScale: 'Severe',
+        incObs: true,
+        incReport: false,
       },
       {
         id: '3',
@@ -42,6 +46,8 @@ export const mockJobs: Record<string, Job> = {
         caption: 'Under sink cabinet',
         damageDetected: 'Minor scratches',
         damageScale: 'Minor',
+        incObs: true,
+        incReport: false,
       },
       {
         id: '4',
@@ -54,6 +60,8 @@ export const mockJobs: Record<string, Job> = {
         caption: 'North wall facing window',
         damageDetected: 'None visible',
         damageScale: 'None',
+        incObs: true,
+        incReport: false,
       },
       {
         id: '5',
@@ -66,6 +74,8 @@ export const mockJobs: Record<string, Job> = {
         caption: 'Center of room',
         damageDetected: 'Light scratches from furniture',
         damageScale: 'Minor',
+        incObs: true,
+        incReport: false,
       },
       {
         id: '6',
@@ -78,6 +88,8 @@ export const mockJobs: Record<string, Job> = {
         caption: 'Shower area',
         damageDetected: 'Cracked tiles, mold presence',
         damageScale: 'Critical',
+        incObs: true,
+        incReport: false,
       },
     ],
   },
@@ -96,6 +108,8 @@ export const mockJobs: Record<string, Job> = {
         caption: 'Overview shot',
         damageDetected: 'Oil stains, minor cracks',
         damageScale: 'Minor',
+        incObs: true,
+        incReport: false,
       },
     ],
   },

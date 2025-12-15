@@ -90,6 +90,8 @@ export async function fetchJobFromSupabase(
       caption: row[config.columns.caption] || '',
       damageDetected: row[config.columns.damageDetected] || '',
       damageScale: parseDamageScale(row[config.columns.damageLabel]),
+      incObs: row[config.columns.incObs] ?? true,
+      incReport: row[config.columns.incReport] ?? false,
     };
   });
 
@@ -128,5 +130,28 @@ export async function updateImageLocation(
 
   if (error) {
     throw new Error(`Failed to update location: ${error.message}`);
+  }
+}
+
+export async function updateImageToggle(
+  imageId: string,
+  field: 'incObs' | 'incReport',
+  value: boolean,
+  config: SupabaseConfig
+): Promise<void> {
+  if (!config.url || !config.anonKey || !config.tableName) {
+    throw new Error('Supabase configuration is incomplete');
+  }
+
+  const supabase = createClient(config.url, config.anonKey);
+  const columnName = config.columns[field];
+
+  const { error } = await supabase
+    .from(config.tableName)
+    .update({ [columnName]: value })
+    .eq('id', imageId);
+
+  if (error) {
+    throw new Error(`Failed to update ${field}: ${error.message}`);
   }
 }
