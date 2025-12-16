@@ -14,6 +14,7 @@ export const SUPABASE_CONFIG: SupabaseConfig = {
     fileName: 'org_image_name',
     description: 'description',
     caption: 'caption',
+    observation: 'observation',
     damageDetected: 'damage_detected',
     damageLabel: 'damage_classification',
     imageLocation: 'image_location',
