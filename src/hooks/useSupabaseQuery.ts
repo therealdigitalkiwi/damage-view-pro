@@ -88,6 +88,7 @@ export async function fetchJobFromSupabase(
       imageUrl: row[config.columns.imageLocation] || '',
       description: row[config.columns.description] || '',
       caption: row[config.columns.caption] || '',
+      observation: row[config.columns.observation] || '',
       damageDetected: row[config.columns.damageDetected] || '',
       damageScale: parseDamageScale(row[config.columns.damageLabel]),
       incObs: row[config.columns.incObs] ?? true,

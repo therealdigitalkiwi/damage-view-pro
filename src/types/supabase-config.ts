@@ -11,6 +11,7 @@ export interface SupabaseConfig {
     fileName: string;
     description: string;
     caption: string;
+    observation: string;
     damageDetected: string;
     damageLabel: string;
     imageLocation: string;
@@ -32,6 +33,7 @@ export const DEFAULT_CONFIG: SupabaseConfig = {
     fileName: 'file_name',
     description: 'description',
     caption: 'caption',
+    observation: 'observation',
     damageDetected: 'damage_detected',
     damageLabel: 'damage_label',
     imageLocation: 'image_location',

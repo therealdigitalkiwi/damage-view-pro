@@ -20,18 +20,11 @@ export const DamageCard = ({ image, onLocationChange, onToggleChange }: DamageCa
     <Card className="overflow-hidden bg-card border-border shadow-sm">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <LocationSelector
-              value={image.location}
-              locations={image.locationsArray}
-              onChange={(newLocation) => onLocationChange(image.id, newLocation)}
-            />
-            {image.numberOf && (
-              <span className="text-sm text-muted-foreground">
-                {image.numberOf}
-              </span>
-            )}
-          </div>
+          <LocationSelector
+            value={image.location}
+            locations={image.locationsArray}
+            onChange={(newLocation) => onLocationChange(image.id, newLocation)}
+          />
           
           {/* Toggle Switches */}
           <div className="flex items-center gap-4">
@@ -43,7 +36,7 @@ export const DamageCard = ({ image, onLocationChange, onToggleChange }: DamageCa
                 id={`inc-obs-${image.id}`}
                 checked={image.incObs}
                 onCheckedChange={(checked) => onToggleChange(image.id, 'incObs', checked)}
-                className="h-7 w-14 data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
               />
             </div>
             <div className="flex items-center gap-2">
@@ -54,7 +47,7 @@ export const DamageCard = ({ image, onLocationChange, onToggleChange }: DamageCa
                 id={`inc-report-${image.id}`}
                 checked={image.incReport}
                 onCheckedChange={(checked) => onToggleChange(image.id, 'incReport', checked)}
-                className="h-7 w-14 data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
               />
             </div>
           </div>
@@ -94,24 +87,24 @@ export const DamageCard = ({ image, onLocationChange, onToggleChange }: DamageCa
 
       <CardContent className="pt-4 space-y-3">
         <div className="flex items-start justify-between gap-2">
-          <p className="text-sm font-medium text-foreground">{image.imageName}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-medium text-foreground">{image.imageName}</p>
+            {image.numberOf && (
+              <span className="text-sm text-muted-foreground">({image.numberOf})</span>
+            )}
+          </div>
           <DamageScaleBadge scale={image.damageScale} />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">Description</p>
-            <p className="text-sm text-foreground">{image.description}</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Caption</p>
+            <p className="text-sm text-foreground line-clamp-2">{image.caption}</p>
           </div>
 
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">Caption</p>
-            <p className="text-sm text-foreground">{image.caption}</p>
-          </div>
-
-          <div className="pt-2 border-t border-border">
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">Damage Detected</p>
-            <p className="text-sm font-medium text-foreground">{image.damageDetected}</p>
+          <div className="border-t border-border pt-3">
+            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Observation</p>
+            <p className="text-sm text-foreground line-clamp-4">{image.observation}</p>
           </div>
         </div>
       </CardContent>

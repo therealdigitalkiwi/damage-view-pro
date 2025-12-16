@@ -7,6 +7,7 @@ export interface DamageImage {
   imageUrl: string;
   description: string;
   caption: string;
+  observation: string;
   damageDetected: string;
   damageScale: DamageScaleType;
   incObs: boolean;
