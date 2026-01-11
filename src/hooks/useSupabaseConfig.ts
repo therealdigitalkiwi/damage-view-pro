@@ -8,8 +8,8 @@ export function useSupabaseConfig() {
     config.url && 
     config.anonKey && 
     config.tableName && 
-    config.url.startsWith('https://') &&
-    config.url.includes('.supabase.co') &&
+    ///config.url.startsWith('https://') &&
+    ///config.url.includes('.supabase.co') &&
     config.anonKey.length > 50
   );
 
